@@ -13,12 +13,6 @@ Using PySpark’s ALS algorithm to deliver personalized movie recommendations.
 
 ## Project Overview
 
-### Becuase "Birds of a Feather" Stick Together
-
-_“Just like Billie sings, birds of a feather, we should stick together — and here, users who rate movies similarly naturally cluster together.” 🎵_
-
-![bird of a feather](https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExbW5mdnVuYTF4czltNHg1anVlamlmc2RkMHlkNHZwOWtzN2NiN25lNiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/btjXY59RCYum69L64R/giphy.gif)
-
 A PySpark-powered movie recommendation system built on collaborative filtering principles. Using ALS (Alternating Least Squares), the system identifies users with similar tastes and recommends titles based on their preferences.
 
 Key capabilities:
@@ -30,6 +24,12 @@ Key capabilities:
 ---
 
 ## The Story Behind This Project
+
+### Becuase "Birds of a Feather" Stick Together
+
+_“Just like Billie sings, birds of a feather, we should stick together — and here, users who rate movies similarly naturally cluster together.” 🎵_
+
+![bird of a feather](https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExbW5mdnVuYTF4czltNHg1anVlamlmc2RkMHlkNHZwOWtzN2NiN25lNiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/btjXY59RCYum69L64R/giphy.gif)
 
 People naturally gravitate toward others with shared interests—and movie preferences are no exception. This project uses ALS to detect hidden taste communities in IMDb rating data, connecting users with similar preferences to deliver meaningful recommendations.
 
@@ -47,11 +47,11 @@ People naturally gravitate toward others with shared interests—and movie prefe
 
 ```
 📦 Movie Recommender
-├── 🗃️  DataLoader Class         # Load & clean IMDb datasets
-├── 👤  User Class               # Manage taste profiles & ratings
-├── 🤖  MovieRecommender         # ALS collaborative filtering & predictions
-├── 🔄  IMDb Rating Converter    # Generate realistic synthetic ratings
-└── 🌐  Streamlit App            # Interactive recommendation interface
+├── 🗃️  utils/DataLoader         # Load & clean IMDb datasets
+├── 👤  utils/User               # Manage user profiles & ratings
+├── 🤖  utils/Recommender        # ALS collaborative filtering & predictions
+├── 🔄  utils/IMDbRatingsConverter  # Generate realistic synthetic ratings
+└── 🌐  app.py                   # Interactive recommendation interface
 ```
 
 ---
