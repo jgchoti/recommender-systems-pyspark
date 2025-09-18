@@ -27,17 +27,9 @@ Key capabilities:
 
 People naturally gravitate toward others with shared interests—and movie preferences are no exception. This project uses ALS to detect hidden taste communities in IMDb rating data, connecting users with similar preferences to deliver meaningful recommendations.
 
-What I explored:
+**Features**
 
-- **Collaborative Filtering**: How users naturally cluster based on rating patterns
-- **ALS Algorithm Mechanics**: Extracting latent factors that represent taste communities
-- **Scalable Pattern Detection**: Processing millions of ratings to identify communities at scale
-
----
-
-Features
-
-- **Data Ingestion & Cleaning**: Load, parse, and clean 7 IMDb datasets into PostgreSQL, ensuring high-quality structured data
+- **Data Ingestion & Cleaning**: Load, parse, and clean 2 IMDb datasets into PostgreSQL, ensuring high-quality structured data
 - **User Management System**: Collect, validate, and manage user ratings to build individual taste profiles.
 - **Collaborative Filtering Engine**: Use ALS (Alternating Least Squares) to identify latent taste communities and generate personalized recommendations.
 - **Synthetic Rating Generator**: Convert IMDb aggregated ratings into realistic user rating profiles for model training.
