@@ -82,37 +82,32 @@ class Recommender():
         pipeline = Pipeline(stages=[user_indexer, movie_indexer, als])
 
         return ratings, pipeline
+
     
-    def load_existing_model(self):
-        """Try to load an existing trained model from disk"""
-        try:
-            if os.path.exists(self.model_path):
-                print("🔄 Loading existing model...")
-                self.model = PipelineModel.load(self.model_path)
-                print("✅ Model loaded successfully!")
-                return True
-            else:
-                print("ℹ️ No existing model found")
-                return False
-        except Exception as e:
-            print(f"⚠️ Error loading existing model: {e}")
-            return False
-    
-    def train_model(self, force_retrain=False):
-        # Try to load existing model first (unless force retrain is requested)
-        if not force_retrain and self.load_existing_model():
-            return self.model
-            
+    def train_model(self):
         print("🔄 Training new model...")
         user_ratings_df = self.get_user_ratings_df()
+        total_ratings = user_ratings_df.count()
+        unique_users = user_ratings_df.select("userId").distinct().count()
+        unique_movies = user_ratings_df.select("tconst").distinct().count()
+    
+        print(f"📊 Raw data: {total_ratings} ratings, {unique_users} users, {unique_movies} movies")
+        print("📈 User rating counts (top 10):")
+        user_counts = user_ratings_df.groupBy("userId").count().orderBy(desc("count"))
+        user_counts.show(10, False)
+    
         ratings, pipeline = self.prepare_training_data(user_ratings_df)
+        prep_total = ratings.count()
+        prep_users = ratings.select("userId").distinct().count()
+        print(f"📊 After preparation: {prep_total} ratings, {prep_users} users")
+    
         train_df, test_df = ratings.randomSplit([0.8, 0.2], seed=42)
         als_stage = pipeline.getStages()[2]
         param_grid = ParamGridBuilder() \
-            .addGrid(als_stage.rank, [200]) \
-            .addGrid(als_stage.maxIter, [40]) \
-            .addGrid(als_stage.regParam, [0.4]) \
-            .build()
+        .addGrid(als_stage.rank, [200]) \
+        .addGrid(als_stage.maxIter, [40]) \
+        .addGrid(als_stage.regParam, [0.4]) \
+        .build()
 
         evaluator = RegressionEvaluator(
             metricName="rmse",
@@ -126,10 +121,21 @@ class Recommender():
             evaluator=evaluator,
             numFolds=3
         )
+    
+        print("🏋️ Starting model training...")
         model = cv.fit(train_df)
         best_model = model.bestModel  
+    
+    
+        user_indexer = best_model.stages[0]
+        movie_indexer = best_model.stages[1]
+    
+        print(f"✅ Model trained with {len(user_indexer.labels)} users and {len(movie_indexer.labels)} movies")
+        print("Sample included users:", user_indexer.labels[:5])
+    
         best_model.write().overwrite().save(self.model_path) 
         self.model = best_model
+    
         test_predictions = best_model.transform(test_df)
         rmse = evaluator.evaluate(test_predictions)
         print(f"✅ RMSE on test set: {rmse:.4f}")
@@ -141,7 +147,6 @@ class Recommender():
             self.train_model()
         als_model = self.model.stages[2]
         user_recs = als_model.recommendForAllUsers(num_recommendations)
-        # user_recs.show(truncate=False)
         return user_recs
     
     def get_detailed_recommendations(self, user_recs):
@@ -185,7 +190,7 @@ class Recommender():
 
         try:
             new_recommendations.write \
-                .jdbc(url=self.jdbc_url, table="user_recommendations_generated", mode="append", properties=self.properties)
+                .jdbc(url=self.jdbc_url, table="user_recommendations_generated", mode="overwrite", properties=self.properties)
 
         except Exception as e:
             print(f"❌ Error saving recommendations to db: {e}")
@@ -237,22 +242,22 @@ class Recommender():
         
 
 # For testing
-# if __name__ == "__main__":
-#     recommender = Recommender()
+if __name__ == "__main__":
+    recommender = Recommender()
     
-#     try:
-#         print("Testing movie recommender...")
+    try:
+        print("Testing movie recommender...")
       
-#         user_recs = recommender.generate_user_recommendations()
-#         user_recs_with_original = recommender.get_detailed_recommendations(user_recs)
-#         recommender.save_recommendations_to_db(user_recs_with_original)
-#         recs = recommender.get_saved_recommendations("421d59ca-932f-4806-9ce3-2076c205e87c")
-#         if recs:
-#             print("Top recommendations:")
-#             for rec in recs:
-#                 print(f"  • {rec['title']} - Predicted: {rec['predictedRating']:.2f}/5")
+        user_recs = recommender.generate_user_recommendations()
+        user_recs_with_original = recommender.get_detailed_recommendations(user_recs)
+        recommender.save_recommendations_to_db(user_recs_with_original)
+        recs = recommender.get_saved_recommendations("421d59ca-932f-4806-9ce3-2076c205e87c")
+        if recs:
+            print("Top recommendations:")
+            for rec in recs:
+                print(f"  • {rec['title']} - Predicted: {rec['predictedRating']:.2f}/5")
 
-#     except Exception as e:
-#         print(f"Test error: {e}")
-#     finally:
-#         recommender.stop_spark()
+    except Exception as e:
+        print(f"Test error: {e}")
+    finally:
+        recommender.stop_spark()
