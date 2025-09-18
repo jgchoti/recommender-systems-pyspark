@@ -1,6 +1,6 @@
 # Recommendation System using PySpark's ALS Algorithm
 
-Using PySpark’s ALS algorithm to deliver personalized movie recommendations.
+Personalized movie recommendations powered by **PySpark’s ALS (Alternating Least Squares)** collaborative filtering.
 
 ![Python](https://img.shields.io/badge/Python-3.9+-blue)
 ![PySpark](https://img.shields.io/badge/PySpark-3.5.0-orange)
@@ -9,92 +9,77 @@ Using PySpark’s ALS algorithm to deliver personalized movie recommendations.
 ![ALS Algorithm](https://img.shields.io/badge/ML-ALS%20Collaborative%20Filtering-green)
 ![Status](https://img.shields.io/badge/Status-Complete-success)
 
-## Project Overview
+---
 
-A PySpark-powered movie recommendation system built on collaborative filtering principles. Using ALS (Alternating Least Squares), the system identifies users with similar tastes and recommends titles based on their preferences.
+## 1. Project Overview
 
-Key capabilities:
+This system applies **collaborative filtering** to IMDb ratings data, using ALS to identify hidden “taste communities.” Users receive personalized movie recommendations through a Streamlit interface.
 
-- Process 11,907,778 titles and millions of ratings efficiently
-- Discover hidden taste communities with ALS latent factors
-- Deliver personalized recommendations through a Streamlit interface
+**Key capabilities:**
 
-## The Story Behind This Project
+- Efficiently process **11M+ titles** and millions of ratings
+- Discover **latent user communities** with ALS
+- Deliver **real-time personalized recommendations**
 
-### Becuase "Birds of a Feather" Stick Together
+---
+
+## 2. Story Behind the Project
+
+### Because _“Birds of a Feather”_ Stick Together
 
 _“Just like Billie sings, birds of a feather, we should stick together — and here, users who rate movies similarly naturally cluster together.” 🎵_
 
-![bird of a feather](https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExbW5mdnVuYTF4czltNHg1anVlamlmc2RkMHlkNHZwOWtzN2NiN25lNiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/btjXY59RCYum69L64R/giphy.gif)
+![Birds of a feather](https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExbW5mdnVuYTF4czltNHg1anVlamlmc2RkMHlkNHZwOWtzN2NiN25lNiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/btjXY59RCYum69L64R/giphy.gif)
 
-People naturally gravitate toward others with shared interests—and movie preferences are no exception. This project uses ALS to detect hidden taste communities in IMDb rating data, connecting users with similar preferences to deliver meaningful recommendations.
-
-**Features**
-
-- **Data Ingestion & Cleaning**: Load, parse, and clean 2 IMDb datasets into PostgreSQL, ensuring high-quality structured data
-- **User Management System**: Collect, validate, and manage user ratings to build individual taste profiles.
-- **Collaborative Filtering Engine**: Use ALS (Alternating Least Squares) to identify latent taste communities and generate personalized recommendations.
-- **Synthetic Rating Generator**: Convert IMDb aggregated ratings into realistic user rating profiles for model training.
-- **Interactive Web App**: Streamlit interface for users to rate titles and explore personalized recommendations in real time.
+Movies are more than ratings — they reveal patterns of taste. ALS uncovers these hidden clusters, grouping users with similar preferences to generate meaningful recommendations.
 
 ---
 
-## Architecture
+## 3. Architecture
 
 ```
 📦 Movie Recommender
-├── 🗃️  utils/DataLoader         # Load & clean IMDb datasets
-├── 👤  utils/User               # Manage user profiles & ratings
-├── 🤖  utils/Recommender        # ALS collaborative filtering & predictions
-├── 🔄  utils/IMDbRatingsConverter  # Generate realistic synthetic ratings
-└── 🌐  app.py                   # Interactive recommendation interface
+├── 🗃️  utils/DataLoader           # Load & clean IMDb datasets
+├── 👤  utils/User                 # Manage user profiles & ratings
+├── 🤖  utils/Recommender          # ALS collaborative filtering & predictions
+├── 🔄  utils/IMDbRatingsConverter # Generate synthetic ratings
+└── 🌐  app.py                     # Streamlit web interface
 ```
 
 ---
 
-## Tech Stack
+## 4. Tech Stack
 
-- **PySpark**: Distributed computing for large-scale ML model training
-- **ALS Algorithm**: Matrix factorization for collaborative filtering
-- **PostgreSQL**: Robust storage for imb data, users, and ratings
-- **Streamlit**: Interactive web interface for rating and recommendations
-- **Pandas**: Data analysis and community pattern exploration
+- **PySpark** → Distributed ML model training
+- **ALS Algorithm** → Matrix factorization for recommendations
+- **PostgreSQL** → Store IMDb data, user profiles, ratings
+- **Streamlit** → Web interface for ratings & recommendations
+- **Pandas** → Data analysis and community insights
 
 ---
 
-## Quick Start
+## 5. Quick Start
 
 ### Prerequisites
 
 - Python 3.9+
 - PySpark 3.5.0+
 - PostgreSQL 14+
-- Java 8+ (required for PySpark)
+- Java 8+ (required by PySpark)
 
 ### Installation
-
-1. **Clone the repository**
 
 ```bash
 git clone git@github.com:jgchoti/recommender-systems-pyspark.git
 cd recommender-systems-pyspark
-```
-
-2. **Set up virtual environment**
-
-```bash
 python -m venv env
 source env/bin/activate
+pip install -r requirements.txt
 ```
 
-3. **Install dependencies**
+### Environment setup
 
-```bash
-pip install pyspark pandas streamlit sqlalchemy psycopg2-binary python-dotenv
-```
-
-4. **Set up environment variables**
-   Create a `.env` file in the project root:
+Create a `.env` file:
 
 ```env
 DB_USER=your_postgres_username
@@ -102,123 +87,96 @@ DB_PASSWORD=your_postgres_password
 DB_HOST=localhost
 ```
 
-5. **Set up PostgreSQL database**
+### Database
 
 ```sql
 CREATE DATABASE imdb_recommendation;
 ```
 
-### Running the Application
-
-1. **Load IMDb data** (first time only)
+### Run the app
 
 ```bash
+# Load IMDb data into PostgreSQL (first time only)
 python utils/data_loader.py
-```
 
-2. **Set up user system**
+# Generate synthetic user ratings from IMDb aggregates (first time only)
+python utils/IMDbRatingsConverter.py
 
-```bash
-python utils/user.py
-```
-
-3. **Generate sample users with ratings** (optional)
-
-```bash
-python utils/imb_rating.py
-```
-
-4. **Launch the web application**
-
-```bash
+# Launch Streamlit app
 streamlit run app.py
 ```
 
-The application will be available at `http://localhost:8501`
-
-## How It Works
-
-### ALS Algorithm: Finding Taste Communities
-
-ALS discovers latent factors that naturally cluster users with similar preferences:
-
-- **Latent Factor Discovery**: Identifies hidden taste dimensions
-- **Natural Clustering**: Groups users with similar rating patterns
-- **Community-Based Recommendations**: Recommends titles highly rated by other users in the same taste cluster.
-
-### Smart Training Data from IMDb Patterns
-
-IMDb’s aggregated ratings are converted into realistic individual user preferences:
-
-- Titles rated 8.0+ → Attract users rating 4–5 stars
-- Titles rated 7.0–7.9 → Users rating 3–4 stars
-- Titles rated 6.0–6.9 → Users rating 2–4 stars
-
-This ensures training data reflects authentic taste communities.
-
-### Recommendation Pipeline
-
-1. User rates Titles through the Streamlit interface
-1. ALS identifies their taste community
-1. System finds Titles favored by similar users
-1. Delivers personalized recommendations with confidence scores
+App runs at: `http://localhost:8501`
 
 ---
 
-## Learning Highlights
+## 6. How It Works
 
-- **Collaborative Filtering Psychology**: Users with similar tastes cluster naturally in mathematical space
-- **ALS Algorithm Elegance**: Latent factors emerge to represent genuine taste communities
-- **Community-Driven Insights**: Individual preferences become meaningful within taste communities
-- **Scale & Pattern Recognition**: Large-scale processing reveals subtle preference signals
+### ALS Algorithm
 
----
+- **Latent factor discovery**: Finds hidden taste dimensions
+- **Community clustering**: Groups users with similar rating patterns
+- **Recommendation**: Suggests titles highly rated by users in the same cluster
 
-### Application Features
+### Training Data
 
-The integrated Streamlit application (`app.py`) provides:
+IMDb aggregated ratings are mapped to synthetic user profiles:
 
-1. **🔧 System Management**
+- 8.0+ → Users rating 4–5 stars
+- 7.0–7.9 → Users rating 3–4 stars
+- 6.0–6.9 → Users rating 2–4 stars
 
-   - Load IMDb data into PostgreSQL
-   - Generate sample users with realistic ratings
-   - Database connection testing
+### Pipeline
 
-2. **👤 User Management**
-
-   - Create new user accounts
-   - Login/logout functionality
-   - User profile management
-     ![app_screenshot](/assets/demo-1.png)
-
-3. **⭐ Movie Rating Interface**
-
-   - Browse popular movies from IMDb
-   - Filter by genre and year
-   - Rate movies on a 1-5 star scale
-   - Real-time rating submission
-     ![app_screenshot](/assets/demo-2.png)
-
-4. **🎬 Recommendation Engine**
-
-   - Train ALS collaborative filtering model
-   - Generate personalized recommendations
-   - View recommendations with confidence scores
-   - Display movie details and predicted ratings
-     ![app_screenshot](/assets/demo-3.png)
-
-5. **📊 User Profile & Statistics**
-   - View rating history
-   - Track average ratings given
-   - Monitor recommendation performance
-     ![app_screenshot](/assets/demo-4.png)
+1. User rates movies in Streamlit
+2. ALS maps them to a taste community
+3. System retrieves titles liked by similar users
+4. Recommendations delivered with confidence scores
 
 ---
 
-## Future Improvements
+## 7. Application Features
 
-- Real-time recommendation updates as user preferences evolve
-- Hybrid approach combining collaborative and content-based filtering
-- Cross-community discovery to explore adjacent taste preferences
-- Community analytics and visualization dashboard
-- Cold-start solutions for new users with minimal ratings
+**System Management**
+
+- Load IMDb data into PostgreSQL
+- Generate sample users & ratings
+
+**User Management**
+
+- Create accounts, login/logout
+- Manage profiles and history
+
+**Movie Rating**
+
+- Browse/filter IMDb titles
+- Rate 1–5 stars, stored instantly
+
+**Recommendation Engine**
+
+- Train ALS model
+- Display personalized recommendations with predicted ratings
+
+**Profile & Statistics**
+
+- Track rating history
+- Monitor recommendation performance
+
+---
+
+## 8. Learning Highlights
+
+- **Latent factors capture hidden taste dimensions**: Users with similar rating patterns align along the same factors in the matrix factorization space.
+
+- **ALS learns features implicitly**: It infers user and item embeddings without requiring manual feature engineering.
+
+- **Scales efficiently**: The algorithm handles millions of users and items through distributed matrix factorization in Spark.
+
+---
+
+## 9. Future Improvements
+
+- Real-time model updates as users add ratings
+- Hybrid model: collaborative + content-based filtering
+- Visualization dashboard for community insights
+- Cold-start strategies for new users
