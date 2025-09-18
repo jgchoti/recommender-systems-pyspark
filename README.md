@@ -9,8 +9,6 @@ Using PySpark’s ALS algorithm to deliver personalized movie recommendations.
 ![ALS Algorithm](https://img.shields.io/badge/ML-ALS%20Collaborative%20Filtering-green)
 ![Status](https://img.shields.io/badge/Status-Complete-success)
 
----
-
 ## Project Overview
 
 A PySpark-powered movie recommendation system built on collaborative filtering principles. Using ALS (Alternating Least Squares), the system identifies users with similar tastes and recommends titles based on their preferences.
@@ -20,8 +18,6 @@ Key capabilities:
 - Process 11,907,778 titles and millions of ratings efficiently
 - Discover hidden taste communities with ALS latent factors
 - Deliver personalized recommendations through a Streamlit interface
-
----
 
 ## The Story Behind This Project
 
@@ -265,5 +261,3 @@ The integrated Streamlit application (`app.py`) provides:
 - Cross-community discovery to explore adjacent taste preferences
 - Community analytics and visualization dashboard
 - Cold-start solutions for new users with minimal ratings
-
----
