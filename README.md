@@ -11,7 +11,20 @@ Personalized movie recommendations powered by **PySpark’s ALS (Alternating Lea
 
 ---
 
-## 1. Project Overview
+## 1. Story Behind the Project
+
+### Because _“Birds of a Feather”_ Stick Together
+
+_“Just like Billie sings, birds of a feather, we should stick together — and here, users who rate movies similarly naturally cluster together.” 🎵_
+
+![Birds of a feather](https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExbW5mdnVuYTF4czltNHg1anVlamlmc2RkMHlkNHZwOWtzN2NiN25lNiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/btjXY59RCYum69L64R/giphy.gif)
+
+Movies are more than ratings — they reveal patterns of taste. ALS uncovers these hidden clusters, grouping users with similar preferences to generate meaningful recommendations.
+
+
+---
+
+## 2. Project Overview 
 
 This system applies **collaborative filtering** to IMDb ratings data, using ALS to identify hidden “taste communities.” Users receive personalized movie recommendations through a Streamlit interface.
 
@@ -21,17 +34,7 @@ This system applies **collaborative filtering** to IMDb ratings data, using ALS 
 - Discover **latent user communities** with ALS
 - Deliver **real-time personalized recommendations**
 
----
 
-## 2. Story Behind the Project
-
-### Because _“Birds of a Feather”_ Stick Together
-
-_“Just like Billie sings, birds of a feather, we should stick together — and here, users who rate movies similarly naturally cluster together.” 🎵_
-
-![Birds of a feather](https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExbW5mdnVuYTF4czltNHg1anVlamlmc2RkMHlkNHZwOWtzN2NiN25lNiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/btjXY59RCYum69L64R/giphy.gif)
-
-Movies are more than ratings — they reveal patterns of taste. ALS uncovers these hidden clusters, grouping users with similar preferences to generate meaningful recommendations.
 
 ---
 
